@@ -308,7 +308,7 @@ int main(void) {
 #endif
 
   // Set up watchdog to trigger after 500ms
-  watchdogConfig(WATCHDOG_1S);
+  //watchdogConfig(WATCHDOG_1S);
 
   /* Set LED pin as output */
   LED_DDR |= _BV(LED);
@@ -489,7 +489,7 @@ int main(void) {
     }
     else if (ch == 'Q') {
       // Adaboot no-wait mod
-      watchdogConfig(WATCHDOG_16MS);
+      //watchdogConfig(WATCHDOG_16MS);
       verifySpace();
     }
     else {
@@ -577,7 +577,8 @@ uint8_t getch(void) {
        * the application "soon", if it keeps happening.  (Note that we
        * don't care that an invalid char is returned...)
        */
-    watchdogReset();
+    //watchdogReset();
+    ;
   }
   
   ch = UDR0;
@@ -620,7 +621,7 @@ void getNch(uint8_t count) {
 
 void verifySpace() {
   if (getch() != CRC_EOP) {
-    watchdogConfig(WATCHDOG_16MS);    // shorten WD timeout
+    //watchdogConfig(WATCHDOG_16MS);    // shorten WD timeout
     while (1)			      // and busy-loop so that WD causes
       ;				      //  a reset and app start.
   }
@@ -638,11 +639,11 @@ void flash_led(uint8_t count) {
 #else
     LED_PIN |= _BV(LED);
 #endif
-    watchdogReset();
+//    watchdogReset();
   } while (--count);
 }
 #endif
-
+/*
 // Watchdog functions. These are only safe with interrupts turned off.
 void watchdogReset() {
   __asm__ __volatile__ (
@@ -654,9 +655,10 @@ void watchdogConfig(uint8_t x) {
   WDTCSR = _BV(WDCE) | _BV(WDE);
   WDTCSR = x;
 }
+*/
 
 void appStart() {
-  watchdogConfig(WATCHDOG_OFF);
+//  watchdogConfig(WATCHDOG_OFF);
   __asm__ __volatile__ (
 #ifdef VIRTUAL_BOOT_PARTITION
     // Jump to WDT vector
